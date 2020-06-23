@@ -1,10 +1,11 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import BotaoEntrar from '../componentes/BotãoEntrar'
-import BotaoCadastrar from '../componentes/BotãoCadastro'
+import BotaoPadrao from '../componentes/BotãoPadrao'
+import 'react-native-gesture-handler';
 
-function TelaDeLogin(){
+
+function TelaDeLogin({navigation}){
 	return(
 		<View style ={estilos.containerTelaLogin}>
 			<Text style={estilos.textoLogin}>
@@ -15,8 +16,16 @@ function TelaDeLogin(){
 			placeholder=' Digite o seu email aqui!'
 			placeholderTextColor ='grey'
 			/>
-			<BotaoEntrar/>
-			<BotaoCadastrar/>
+			<BotaoPadrao 
+				pressionado={()=>navigation.navigate('TelaDeTarefas')}
+				titulo={'Entrar'}
+				cor={'#5f9ea0'}
+				/>
+			<BotaoPadrao 
+				pressionado={()=>navigation.navigate('TelaDeCadastro')}
+				titulo={'Cadastrar'}
+				cor={'#ffe4c4'}
+				/>
 		</View>
 	)
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import BotaoCadastrar from '../componentes/BotãoCadastro'
+import BotaoPadrao from '../componentes/BotãoPadrao'
 
 function TelaDeCadastro(){
 	return(
@@ -10,16 +10,19 @@ function TelaDeCadastro(){
 					Cadastro
 			</Text>
 			<TextInput 
-			style={estilos.inputApelido}
-			placeholder=' Digite o seu apelido aqui!'
-			placeholderTextColor ='grey'
+				style={estilos.inputApelido}
+				placeholder=' Digite o seu apelido aqui!'
+				placeholderTextColor ='grey'
 			/>
 			<TextInput 
-			style={estilos.inputEmail}
-			placeholder=' Digite o seu email aqui!'
-			placeholderTextColor ='grey'
+				style={estilos.inputEmail}
+				placeholder=' Digite o seu email aqui!'
+				placeholderTextColor ='grey'
 			/>
-			<BotaoCadastrar/>
+			<BotaoPadrao
+				titulo={'Cadastrar'}
+				cor={'#ffe4c4'}
+			/>
 		</View>
 	)
 }
@@ -52,7 +55,6 @@ const estilos = {
 		margin: 15,
 		backgroundColor: '#ffebcd'
 	}
-
 }
 
 export default TelaDeCadastro;
