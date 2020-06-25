@@ -3,12 +3,9 @@ import {TouchableOpacity, Text} from 'react-native'
 import {connect} from 'react-redux'
 import {adicionarTarefa, atualizarConteudo} from '../redux/actions/tarefas'
 
-function BotaoAdicionarTarefa({caixaDeTexto, dispatch}){
+function BotaoAdicionarTarefa({pressionado}){
 	return(
-		<TouchableOpacity onPress={()=>{
-			dispatch(adicionarTarefa(caixaDeTexto)),
-			dispatch(atualizarConteudo(''))
-		}}>
+		<TouchableOpacity onPress={pressionado}>
 			<Text style={estilos.botaoAdicionar}>
 				➕
 			</Text>
@@ -16,13 +13,8 @@ function BotaoAdicionarTarefa({caixaDeTexto, dispatch}){
 	)
 }
 
-const mapStateToProps = (store) => {
-	return {
-	  caixaDeTexto: store.caixaDeTexto
-	}
-  }
 
-export default connect(mapStateToProps)(BotaoAdicionarTarefa)
+export default BotaoAdicionarTarefa
 
 
 const estilos = {

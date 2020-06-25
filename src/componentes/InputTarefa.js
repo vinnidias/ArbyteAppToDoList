@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text} from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import {connect} from 'react-redux'
 import {atualizarConteudo} from '../redux/actions/tarefas'
 import BotaoAdicionarTarefa from '../componentes/BotaoAdicionarTarefa'
+import postarTarefa from '../api/postTarefa'
 
-
-function InputTarefa({caixaDeTexto, dispatch}){
+function InputTarefa({token}){
+	const [descricao, setDescricao] = useState('')
+	const completa = false
 	return(
 		<View style={estilos.inputTarefa} >
 			<TextInput style={estilos.placeholder}
-				value={caixaDeTexto}
-				onChangeText={(novoTexto)=> dispatch(atualizarConteudo(novoTexto))}
+				value={descricao}
+				onChangeText={(novoTexto)=> setDescricao(novoTexto)}
 				placeholder='O que você tem para fazer?'
 				maxLength={24}
 			/>
-			<BotaoAdicionarTarefa caixaDeTexto={caixaDeTexto}/>
+			<BotaoAdicionarTarefa pressionado={()=> postarTarefa(token, descricao, completa)
+				.then(res => {console.log('foi', res.data);
+					setDescricao('')}
+				)
+				.catch(err => {console.log('deu ruim', err); setDescricao('')})
+		
+			}/>
 		</View>
 	)
 }
@@ -40,10 +48,6 @@ const estilos = {
 	},
 	
 }
-const mapStateToProps = (store) => {
-  return {
-    caixaDeTexto: store.caixaDeTexto
-  }
-}
 
-export default connect(mapStateToProps)(InputTarefa)
+
+export default InputTarefa
