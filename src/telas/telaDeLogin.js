@@ -24,7 +24,10 @@ function TelaDeLogin({route, navigation}){
 			<BotaoPadrao 
 				pressionado={()=> validaLogin(email)
 					.then(res => {console.log('caiu aqui'); 
-						navigation.navigate('TelaDeTarefas', {nome: res.data.user.fullName, token: res.data.token})})
+						navigation.navigate('TelaDeTarefas', 
+							{nome: res.data.user.fullName, token: res.data.token});
+						setEmail('')
+						})
 					.catch(err => {console.log('caiu no erro', err); Alert.alert('dados inválidos')})
 				}
 				titulo={'Entrar'}

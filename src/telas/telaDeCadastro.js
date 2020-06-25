@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, Alert} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import BotaoPadrao from '../componentes/BotaoPadrao'
 import cadastraUsuario from '../api/cadastro'
@@ -30,8 +30,9 @@ function TelaDeCadastro(){
 			/>
 			<BotaoPadrao
 				pressionado={()=> cadastraUsuario(nome, email)
-					.then(res => {console.log('deu certo',res.data); setNome(''); setEmail('')})
-					.catch(err => {console.log('caiu no erro', JSON.stringify(err)); setNome(''); setEmail('')})
+					.then(res => {Alert.alert('Cadastro feito com sucesso!'); setNome(''); setEmail('');})
+					.catch(err => {Alert.alert('Dados inválidos!'); 
+						setNome(''); setEmail('')})
 				}
 				titulo={'Cadastrar'}
 				cor={'#ffe4c4'}
