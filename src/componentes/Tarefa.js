@@ -65,7 +65,8 @@ const estilos = {
 	},
 	containerBotoes:{
 		flexDirection: 'row',
-		alignSelf: 'flex-end'
+		alignSelf: 'flex-end',
+		marginLeft: 20
 	}
 }
 

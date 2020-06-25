@@ -2,15 +2,18 @@ import React, {useState} from  'react'
 import {View, Text} from 'react-native'
 import InputTarefa from '../componentes/InputTarefa'
 import Tarefa from '../componentes/Tarefa'
+import ListaDeTarefas from '../componentes/ListaDeTarefas'
 
-function TelaDeTarefas(){
+function TelaDeTarefas({route, navigation}){
+	const {nome} = route.params
+	const {token} = route.params
 	const tarefas = []
 	const [tarefa, setTarefa] = useState('')
 	return(
 		<View style={estilos.containerTelaTarefa}>
 			<View styl={estilos.containerCabecalho}>
 				<Text style={estilos.textoUsuario}>
-						Olá Usuário!
+						Olá {nome}
 				</Text>
 				<Text style={estilos.subTexto}>
 					Aqui estão as suas tarefas!
@@ -18,6 +21,7 @@ function TelaDeTarefas(){
 			</View>
 			<InputTarefa tarefas={tarefas}/>
 			<View style={estilos.containerListaDeTarefas}>
+				<ListaDeTarefas/>
 			</View>
 	</View>
 )

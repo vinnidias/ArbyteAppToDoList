@@ -1,19 +1,21 @@
 import React from 'react';
 import {View, Text} from 'react-native'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import {connect} from 'react-redux'
+import {atualizarConteudo} from '../redux/actions/tarefas'
+import BotaoAdicionarTarefa from '../componentes/BotaoAdicionarTarefa'
 
-function InputTarefa(){
+
+function InputTarefa({caixaDeTexto, dispatch}){
 	return(
 		<View style={estilos.inputTarefa} >
 			<TextInput style={estilos.placeholder}
+				value={caixaDeTexto}
+				onChangeText={(novoTexto)=> dispatch(atualizarConteudo(novoTexto))}
 				placeholder='O que você tem para fazer?'
-				maxLength={22}
+				maxLength={24}
 			/>
-			<TouchableOpacity>
-				<Text style={estilos.botaoAdicionar}>
-					➕
-				</Text>
-			</TouchableOpacity>
+			<BotaoAdicionarTarefa caixaDeTexto={caixaDeTexto}/>
 		</View>
 	)
 }
@@ -34,8 +36,14 @@ const estilos = {
 	botaoAdicionar:{
 		alignSelf: 'flex-end',
 		margin: 15,
-		marginLeft: 60,
+		marginLeft: 80,
 	},
 	
 }
-export default InputTarefa;
+const mapStateToProps = (store) => {
+  return {
+    caixaDeTexto: store.caixaDeTexto
+  }
+}
+
+export default connect(mapStateToProps)(InputTarefa)
