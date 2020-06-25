@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Text, View} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import BotaoPadrao from '../componentes/BotãoPadrao'
+import BotaoPadrao from '../componentes/BotaoPadrao'
+import cadastraUsuario from '../api/cadastro'
+
 
 function TelaDeCadastro(){
+	const [nome, setNome] = useState('')
+	const [email, setEmail] = useState('')
+
 	return(
 		<View style ={estilos.containerTelaLogin}>
 			<Text style={estilos.textoCadastro}>
@@ -11,15 +16,23 @@ function TelaDeCadastro(){
 			</Text>
 			<TextInput 
 				style={estilos.inputApelido}
+				value={nome}
+				onChangeText={novoTexto => setNome(novoTexto)}
 				placeholder=' Digite o seu apelido aqui!'
 				placeholderTextColor ='grey'
 			/>
 			<TextInput 
 				style={estilos.inputEmail}
+				value={email}
+				onChangeText={novoTexto => setEmail(novoTexto)}
 				placeholder=' Digite o seu email aqui!'
 				placeholderTextColor ='grey'
 			/>
 			<BotaoPadrao
+				pressionado={()=> cadastraUsuario(nome, email)
+					.then(res => {console.log('deu certo',res.data); setNome(''); setEmail('')})
+					.catch(err => {console.log('caiu no erro', JSON.stringify(err)); setNome(''); setEmail('')})
+				}
 				titulo={'Cadastrar'}
 				cor={'#ffe4c4'}
 			/>
