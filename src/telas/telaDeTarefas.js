@@ -1,27 +1,47 @@
-import React, {useState} from  'react'
-import {View, Text} from 'react-native'
+import React, {useState, useEffect} from  'react'
+import {View, Text, AsyncStorage} from 'react-native'
 import InputTarefa from '../componentes/InputTarefa'
 import Tarefa from '../componentes/Tarefa'
 import ListaDeTarefas from '../componentes/ListaDeTarefas'
+import axios from 'axios'
+import exluirTarefa from '../api/exluirTarefa'
+import editarTarefa from '../api/editarTarefa'
+import postarTarefa from '../api/postTarefa'
 
 function TelaDeTarefas({route, navigation}){
 	const {nome} = route.params
 	const {token} = route.params
-	const tarefas = []
-	const [tarefa, setTarefa] = useState('')
+	const [tarefas, setTarefas] = useState([])
+	useEffect(()=>{axios.get('https://arbyte-todo-list-api.herokuapp.com/tasks',{
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+		})
+		  .then(res => {setTarefas(res.data);})
+	}, [tarefas])
 	return(
 		<View style={estilos.containerTelaTarefa}>
 			<View styl={estilos.containerCabecalho}>
 				<Text style={estilos.textoUsuario}>
-						Olá {nome}
+						Olá {nome}!
 				</Text>
 				<Text style={estilos.subTexto}>
 					Aqui estão as suas tarefas!
 				</Text>
 			</View>
-			<InputTarefa tarefas={tarefas}/>
+			<InputTarefa token ={token} 
+				pressionado={(descricao, completa )=> postarTarefa(token, descricao, completa)
+					.then(res => {console.log('foi', res.data);
+						setDescricao('')}
+					)
+					.catch(err => {console.log('deu ruim', err); setDescricao('')})
+		 		}
+			/>
 			<View style={estilos.containerListaDeTarefas}>
-				<ListaDeTarefas/>
+			<ListaDeTarefas tarefas={tarefas} 
+				deletePress={(id)=> exluirTarefa(token, id)}
+				editPress={(id, novoTexto)=> editarTarefa(token, id, novoTexto)}
+			/>
 			</View>
 	</View>
 )
