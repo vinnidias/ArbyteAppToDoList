@@ -1,22 +1,28 @@
-import React from 'react';
-import {View} from 'react-native';
-import {connect} from 'react-redux'
+import React, { useEffect } from 'react';
+import {ScrollView} from 'react-native';
 import Tarefa from './Tarefa';
 
-const ListaDeTarefas = ({tarefas}) => {
+
+const ListaDeTarefas = ({tarefas, deletePress, editPress}) => {
   return (
-    <View>
-      {tarefas.map((tarefa) => (
-        <Tarefa texto={tarefa} />
+    <ScrollView style={estilos.containerLista}>
+      {tarefas.sort((a,b)=> b.id - a.id).map((tarefa) => (
+        <Tarefa 
+          texto={tarefa.description}
+          id={tarefa.id} 
+          deletePress={deletePress} 
+          key={tarefa.id} 
+          editPress={editPress} 
+          />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
-const mapStateToProps = (store) => {
-  return {
-    tarefas: store.tarefas
+const estilos = {
+  containerLista:{
+    width: 300
   }
 }
 
-export default connect(mapStateToProps)(ListaDeTarefas);
+export default ListaDeTarefas;
