@@ -1,10 +1,14 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import React, { useState } from 'react';
+import {Text, View, Alert} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import BotaoEntrar from '../componentes/BotãoEntrar'
-import BotaoCadastrar from '../componentes/BotãoCadastro'
+import BotaoPadrao from '../componentes/BotaoPadrao'
+import 'react-native-gesture-handler';
+import validaLogin from '../api/login'
 
-function TelaDeLogin(){
+
+function TelaDeLogin({route, navigation}){
+	const [email, setEmail] = useState('')
+	const [token, setToken] = useState('')
 	return(
 		<View style ={estilos.containerTelaLogin}>
 			<Text style={estilos.textoLogin}>
@@ -12,11 +16,28 @@ function TelaDeLogin(){
 			</Text>
 			<TextInput 
 			style={estilos.inputEmail}
+			value={email}
+			onChangeText={texto => setEmail(texto)}
 			placeholder=' Digite o seu email aqui!'
 			placeholderTextColor ='grey'
 			/>
-			<BotaoEntrar/>
-			<BotaoCadastrar/>
+			<BotaoPadrao 
+				pressionado={()=> validaLogin(email)
+					.then(res => {console.log('caiu aqui'); 
+						navigation.navigate('TelaDeTarefas', 
+							{nome: res.data.user.fullName, token: res.data.token});
+						setEmail('')
+						})
+					.catch(err => {console.log('caiu no erro', err); Alert.alert('dados inválidos')})
+				}
+				titulo={'Entrar'}
+				cor={'#5f9ea0'}
+				/>
+			<BotaoPadrao 
+				pressionado={()=>navigation.navigate('TelaDeCadastro')}
+				titulo={'Cadastrar'}
+				cor={'#ffe4c4'}
+				/>
 		</View>
 	)
 }

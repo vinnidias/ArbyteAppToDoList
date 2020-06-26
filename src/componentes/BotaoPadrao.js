@@ -1,12 +1,19 @@
 import React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 
-export default function BotaoCadastrar(funcao){
+
+export default function BotaoPadrao({titulo, cor, pressionado}){
 	return(
-		<TouchableOpacity>
-			<View style={estilos.containerBotaoCadastro}>
+		<TouchableOpacity onPress={pressionado}>
+			<View style={{
+				height: 40,
+				width: 140,
+				borderRadius: 5,
+				margin: 15,
+				backgroundColor: cor}}
+				>
 				<Text style={estilos.textoBotao}>
-					Cadastrar
+					{titulo}
 				</Text>
 			</View>
 		</TouchableOpacity>	
@@ -22,8 +29,7 @@ const estilos = {
 	containerBotaoCadastro:{
 		height: 40,
 		width: 140,
-		backgroundColor: '#ffe4c4',
 		borderRadius: 5,
-		margin: 15
+		margin: 15,
 	}
 }
