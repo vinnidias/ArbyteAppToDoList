@@ -7,6 +7,7 @@ import axios from 'axios'
 import exluirTarefa from '../api/exluirTarefa'
 import editarTarefa from '../api/editarTarefa'
 import postarTarefa from '../api/postTarefa'
+import completaTarefa from '../api/completaTarefa'
 
 function TelaDeTarefas({route, navigation}){
 	const {nome} = route.params
@@ -32,15 +33,17 @@ function TelaDeTarefas({route, navigation}){
 			<InputTarefa token ={token} 
 				pressionado={(descricao, completa )=> postarTarefa(token, descricao, completa)
 					.then(res => {console.log('foi', res.data);
-						setDescricao('')}
+						
+						}
 					)
-					.catch(err => {console.log('deu ruim', err); setDescricao('')})
+					.catch(err => {console.log('deu ruim', err)})
 		 		}
 			/>
 			<View style={estilos.containerListaDeTarefas}>
 			<ListaDeTarefas tarefas={tarefas} 
 				deletePress={(id)=> exluirTarefa(token, id)}
-				editPress={(id, novoTexto)=> editarTarefa(token, id, novoTexto)}
+				editPress={(id, novoTexto)=> {editarTarefa(token, id, novoTexto).then(res => console.log('atualizou', res.data))}}
+				checkPress={(id, check)=>{ completaTarefa(token,id, !check).then(res => console.log('aqui', res.data))}}
 			/>
 			</View>
 	</View>

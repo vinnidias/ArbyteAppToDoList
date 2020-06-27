@@ -2,20 +2,27 @@ import React, { useState } from 'react'
 import {View, Text, TextInput} from 'react-native'
 import BotaoIcone from './BotaoIcone'
 import exluirTarefa from '../api/exluirTarefa'
+import BotaoCheckBox from './CheckBox'
 
-function Tarefa({texto, deletePress, editPress, id,}){
+function Tarefa({texto, deletePress, editPress, checkPress, id,}){
 	const [editavel, setEditavel] = useState(false)
-	const [novoTexto, setNovoTexto] = useState('')
+	const [novoTexto, setNovoTexto] = useState(novoTexto)
+	const [value, setValue] =useState(texto)
 	return(
+		
 		<View style={estilos.containerTarefa}>
+			<BotaoCheckBox pressionado={(check)=>{checkPress(id, check)}}/>
 			<View style={estilos.containerTexto}>
 			<TextInput style={estilos.textoTarefa}
-				value={texto}
+				value={value}
 				editable={editavel}
-				onChangeText={text=> setNovoTexto(text)}
+				onChangeText={text=> setValue(text)}
 			/>
 			</View>
-			<BotaoIcone icone={'✏️'} pressionado={()=> {editPress(id, novoTexto); setEditavel(!editavel)}}/>
+			{editavel 
+				? <BotaoIcone icone={'✔️'} pressionado={()=> {editPress(id, value);setEditavel(!editavel)}}/>
+				: <BotaoIcone icone={'✏️'} pressionado={()=> {setEditavel(!editavel)}}/>
+				}
 			<BotaoIcone pressionado={()=> deletePress(id)} icone={'❌'}/>
 		</View>
 	)

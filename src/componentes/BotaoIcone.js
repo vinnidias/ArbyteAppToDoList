@@ -18,12 +18,12 @@ const estilos ={
     containerBotoes:{
 		flexDirection: 'row',
 		alignSelf: 'flex-end',
-        marginLeft: 10,
+        marginLeft: -5,
     },
     botaoExcluir:{
 		alignSelf: 'flex-end',
 		margin: 15,
-		marginLeft: 5
+		marginLeft: 1
 	}
 }
 

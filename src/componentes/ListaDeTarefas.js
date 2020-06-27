@@ -3,16 +3,17 @@ import {ScrollView} from 'react-native';
 import Tarefa from './Tarefa';
 
 
-const ListaDeTarefas = ({tarefas, deletePress, editPress}) => {
+const ListaDeTarefas = ({tarefas, deletePress, editPress, checkPress}) => {
   return (
     <ScrollView style={estilos.containerLista}>
-      {tarefas.sort((a,b)=> b.id - a.id).map((tarefa) => (
+      {tarefas.sort((a,b)=> a.completed - b.completed).map((tarefa) => (
         <Tarefa 
           texto={tarefa.description}
           id={tarefa.id} 
           deletePress={deletePress} 
           key={tarefa.id} 
           editPress={editPress} 
+          checkPress={checkPress}
           />
       ))}
     </ScrollView>

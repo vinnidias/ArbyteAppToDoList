@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Text, View, Alert} from 'react-native';
+import {Text, View, Alert, AsyncStorage} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import BotaoPadrao from '../componentes/BotaoPadrao'
 import 'react-native-gesture-handler';
