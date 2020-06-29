@@ -6,6 +6,7 @@ import Tarefa from './Tarefa';
 const ListaDeTarefas = ({tarefas, deletePress, editPress, checkPress}) => {
   return (
     <ScrollView style={estilos.containerLista}>
+      {console.log('tiltei', tarefas)}
       {tarefas.sort((a,b)=> a.completed - b.completed).map((tarefa) => (
         <Tarefa 
           texto={tarefa.description}
