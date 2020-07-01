@@ -1,27 +1,28 @@
-import React from 'react'
-import {View, Text} from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import React, { useState } from 'react'
+import {View, Text, TextInput} from 'react-native'
+import BotaoIcone from './BotaoIcone'
+import exluirTarefa from '../api/exluirTarefa'
+import BotaoCheckBox from './CheckBox'
 
-function Tarefa({texto}){
+function Tarefa({texto, deletePress, editPress, checkPress, id, bool}){
+	const [editavel, setEditavel] = useState(false)
+	const [value, setValue] =useState(texto)
 	return(
+		
 		<View style={estilos.containerTarefa}>
+			<BotaoCheckBox pressionado={(check)=>{checkPress(id, check)}} bool={bool}/>
 			<View style={estilos.containerTexto}>
-			<Text style={estilos.textoTarefa}>
-					{texto}
-			</Text>
+			<TextInput style={estilos.textoTarefa}
+				value={value}
+				editable={editavel}
+				onChangeText={text=> setValue(text)}
+			/>
 			</View>
-			<View style={estilos.containerBotoes}>
-				<TouchableOpacity>
-					<Text style={estilos.botaoEditar}>
-						✏️
-					</Text>
-				</TouchableOpacity>
-				<TouchableOpacity>
-					<Text style={estilos.botaoExcluir}>
-						❌
-					</Text>
-				</TouchableOpacity>
-			</View>
+			{editavel 
+				? <BotaoIcone icone={'✔️'} pressionado={()=> {editPress(id, value);setEditavel(!editavel)}}/>
+				: <BotaoIcone icone={'✏️'} pressionado={()=> {setEditavel(!editavel)}}/>
+				}
+			<BotaoIcone pressionado={()=> deletePress(id)} icone={'❌'}/>
 		</View>
 	)
 }
@@ -43,15 +44,7 @@ const estilos = {
 		color: 'grey',
 		margin: 15
 	},
-	botaoEditar:{
-		alignSelf: 'flex-end',
-		margin: 15,
-	},
-	botaoExcluir:{
-		alignSelf: 'flex-end',
-		margin: 15,
-		marginLeft: 5
-	},
+
 	checkBox:{
 		height: 15,
 		width: 15,
@@ -63,11 +56,6 @@ const estilos = {
 	checkText:{
 		alignSelf: 'center'
 	},
-	containerBotoes:{
-		flexDirection: 'row',
-		alignSelf: 'flex-end',
-		marginLeft: 20
-	}
 }
 
 export default Tarefa;

@@ -1,58 +1,133 @@
-import React, {useState} from  'react'
-import {View, Text} from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, AsyncStorage } from 'react-native'
 import InputTarefa from '../componentes/InputTarefa'
 import Tarefa from '../componentes/Tarefa'
 import ListaDeTarefas from '../componentes/ListaDeTarefas'
+import axios from 'axios'
+import exluirTarefa from '../api/exluirTarefa'
+import editarTarefa from '../api/editarTarefa'
+import postarTarefa from '../api/postTarefa'
+import completaTarefa from '../api/completaTarefa'
+import { adionarLista, adicionarTarefa } from '../redux/actions/tarefas'
+import { connect } from 'react-redux'
+import BotaoPadrao from '../componentes/BotaoPadrao'
 
-function TelaDeTarefas({route, navigation}){
-	const {nome} = route.params
-	const {token} = route.params
-	const tarefas = []
-	const [tarefa, setTarefa] = useState('')
-	return(
+
+
+
+function TelaDeTarefas({ dispatch, navigation, tarefas }) {
+	// const {nome} = route.params
+	// const {token} = route.params
+	const [userData, setUserData] = useState({ user: {} })
+
+	useEffect(() => {
+		AsyncStorage.getItem('userData')
+			.then((userData) => {
+				if (userData != null) {
+					const parsed = JSON.parse(userData);
+					console.log('async parceado', userData)
+					setUserData(parsed)
+					return parsed.token;
+				}else{
+					navigation.navigate('TelaDeLogin')
+				}
+			})
+			.then((token) => {
+				if (!token) return;
+				return axios.get('https://arbyte-todo-list-api.herokuapp.com/tasks', {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				})
+			})	
+			.then(res => {
+				dispatch(adionarLista(res.data))
+			}).catch(err => console.log('erro de rede', err))
+	}, [])
+	console.log('render', tarefas)
+	return (
 		<View style={estilos.containerTelaTarefa}>
 			<View styl={estilos.containerCabecalho}>
 				<Text style={estilos.textoUsuario}>
-						Olá {nome}
+					Olá {userData.user.fullName}!
 				</Text>
 				<Text style={estilos.subTexto}>
 					Aqui estão as suas tarefas!
 				</Text>
 			</View>
-			<InputTarefa tarefas={tarefas}/>
+			<InputTarefa
+				pressionado={(descricao, completa) => postarTarefa(userData.token, descricao, completa)
+					.then(res => {
+						console.log('input', res.data)
+						dispatch(adicionarTarefa(res.data))
+					})
+					.catch(err => { console.log('deu ruim', err) })
+				}
+			/>
 			<View style={estilos.containerListaDeTarefas}>
-				<ListaDeTarefas/>
+				<ListaDeTarefas tarefas={tarefas}
+					deletePress={(id) => exluirTarefa(userData.token, id)
+						.then(()=>{
+							const indice = tarefas.findIndex((tarefa)=> tarefa.id === id)
+							tarefas.splice(indice, 1)
+							dispatch(adionarLista(tarefas))
+							console.log('splice', tarefas)
+						}).catch(err=> console.log('erro do splice', err))}
+					
+					editPress={(id, novoTexto) => { editarTarefa(userData.token, id, novoTexto)
+						.then((res)=>{
+							const indice = tarefas.findIndex((tarefa)=> tarefa.id === id)
+							tarefas.splice(indice, 1)
+							tarefas.push(res.data)
+							dispatch(adionarLista(tarefas))
+
+						}) }}
+					checkPress={(id, check) => { completaTarefa(userData.token, id, !check)
+						.then((res)=>{
+							const indice = tarefas.findIndex((tarefa)=> tarefa.id === id)
+							tarefas.splice(indice, 1)
+							tarefas.push(res.data)
+							console.log('resultado do checkpress', res.data)
+							dispatch(adionarLista(tarefas))
+						}) 
+					}}
+				/>
 			</View>
-	</View>
-)
+			<BotaoPadrao titulo={'Sair'} pressionado={()=> {
+				AsyncStorage.removeItem('userData')
+					.then((userData)=> {navigation.navigate('TelaDeLogin')})
+				}
+				}/>
+		</View>
+	)
 }
 
 
 const estilos = {
-	containerTelaTarefa:{
+	containerTelaTarefa: {
 		backgroundColor: '#e9967a',
 		flex: 1,
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 		padding: 40
 	},
-	containerCabecalho:{
+	containerCabecalho: {
 		flex: 4,
 		marginBottom: 40,
 	},
-	containerListaDeTarefas:{
-		flex:2,
+	containerListaDeTarefas: {
+		flex: 2,
 		marginTop: 60
 
 	},
-	textoUsuario:{
+	textoUsuario: {
 		fontSize: 34,
 		fontWeight: 'bold',
 	},
-	subTexto:{
+	subTexto: {
 		fontSize: 22,
 	},
-	inputTarefa:{
+	inputTarefa: {
 		flexDirection: 'row',
 		height: 50,
 		width: 300,
@@ -60,10 +135,15 @@ const estilos = {
 		backgroundColor: '#ffebcd',
 		marginTop: 60
 	},
-	placeholder:{
+	placeholder: {
 		color: 'grey',
 		margin: 8
 	}
 }
+const mapStateToProps = (store) => {
+	return {
+		tarefas: store.tarefas
+	}
+}
 
-export default TelaDeTarefas
+export default connect(mapStateToProps)(TelaDeTarefas)

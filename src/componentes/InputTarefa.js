@@ -6,7 +6,10 @@ import {atualizarConteudo} from '../redux/actions/tarefas'
 import BotaoAdicionarTarefa from '../componentes/BotaoAdicionarTarefa'
 import postarTarefa from '../api/postTarefa'
 
-function InputTarefa({token}){
+
+		
+
+function InputTarefa({token, pressionado}){
 	const [descricao, setDescricao] = useState('')
 	const completa = false
 	return(
@@ -17,13 +20,7 @@ function InputTarefa({token}){
 				placeholder='O que você tem para fazer?'
 				maxLength={24}
 			/>
-			<BotaoAdicionarTarefa pressionado={()=> postarTarefa(token, descricao, completa)
-				.then(res => {console.log('foi', res.data);
-					setDescricao('')}
-				)
-				.catch(err => {console.log('deu ruim', err); setDescricao('')})
-		
-			}/>
+			<BotaoAdicionarTarefa pressionado={()=>{ pressionado(descricao, completa);setDescricao('')}}/>
 		</View>
 	)
 }

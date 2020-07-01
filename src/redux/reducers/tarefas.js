@@ -6,9 +6,10 @@ const adicionarTarefa = (state=estadoInicial, action) =>{
   switch (action.type) {
     case 'ADICIONAR_TAREFA':
       return{...state, tarefas: [...state.tarefas, action.tarefa]};
-    case 'ATUALIZAR_CAIXA_DE_TEXTO':
-      console.log('caiu aqui')
-      return {...state, caixaDeTexto: action.texto}
+    case 'ADICIONAR_LISTA':
+      const newStore = {...state, tarefas: [...action.lista]};
+      console.log('After Tasks', action.lista ,newStore)
+      return newStore;
     default:
       return state;
   }

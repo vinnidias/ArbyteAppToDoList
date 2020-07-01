@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Text, View, Alert} from 'react-native';
+import {Text, View, Alert, AsyncStorage} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import BotaoPadrao from '../componentes/BotaoPadrao'
 import 'react-native-gesture-handler';
@@ -23,10 +23,13 @@ function TelaDeLogin({route, navigation}){
 			/>
 			<BotaoPadrao 
 				pressionado={()=> validaLogin(email)
-					.then(res => {console.log('caiu aqui'); 
-						navigation.navigate('TelaDeTarefas', 
-							{nome: res.data.user.fullName, token: res.data.token});
-						setEmail('')
+					.then(res => {
+						return AsyncStorage.setItem('userData', JSON.stringify(res.data))
+						})
+						.then(()=>{
+							console.log('caiu aqui'); 
+							navigation.push('TelaDeTarefas');
+							setEmail('')
 						})
 					.catch(err => {console.log('caiu no erro', err); Alert.alert('dados inválidos')})
 				}

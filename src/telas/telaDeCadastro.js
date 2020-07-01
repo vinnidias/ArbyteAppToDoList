@@ -30,7 +30,8 @@ function TelaDeCadastro(){
 			/>
 			<BotaoPadrao
 				pressionado={()=> cadastraUsuario(nome, email)
-					.then(res => {Alert.alert('Cadastro feito com sucesso!'); setNome(''); setEmail('');})
+					.then(res => {Alert.alert('Cadastro feito com sucesso!'); 
+					})
 					.catch(err => {Alert.alert('Dados inválidos!'); 
 						setNome(''); setEmail('')})
 				}

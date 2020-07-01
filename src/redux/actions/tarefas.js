@@ -5,11 +5,10 @@ const adicionarTarefa = (tarefa) =>{
 	  }
 }
 
-const atualizarConteudo = (texto) =>{
+const adionarLista =(lista)=>{
 	return {
-    type: 'ATUALIZAR_CAIXA_DE_TEXTO',
-    texto,
-  }
+		type: 'ADICIONAR_LISTA',
+		lista,
+	}
 }
-
-export {adicionarTarefa, atualizarConteudo}
+export {adicionarTarefa, adionarLista}
