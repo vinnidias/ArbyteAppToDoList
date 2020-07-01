@@ -4,14 +4,13 @@ import BotaoIcone from './BotaoIcone'
 import exluirTarefa from '../api/exluirTarefa'
 import BotaoCheckBox from './CheckBox'
 
-function Tarefa({texto, deletePress, editPress, checkPress, id,}){
+function Tarefa({texto, deletePress, editPress, checkPress, id, bool}){
 	const [editavel, setEditavel] = useState(false)
-	const [novoTexto, setNovoTexto] = useState(novoTexto)
 	const [value, setValue] =useState(texto)
 	return(
 		
 		<View style={estilos.containerTarefa}>
-			<BotaoCheckBox pressionado={(check)=>{checkPress(id, check)}}/>
+			<BotaoCheckBox pressionado={(check)=>{checkPress(id, check)}} bool={bool}/>
 			<View style={estilos.containerTexto}>
 			<TextInput style={estilos.textoTarefa}
 				value={value}

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import {View, Text, TouchableOpacity, CheckBox} from 'react-native'
-import { set } from 'react-native-reanimated'
+import {View, Text, TouchableOpacity} from 'react-native'
 
-export default function BotaoCheckBox({pressionado}){
-	const [check, setCheck] = useState(false)
+
+export default function BotaoCheckBox({pressionado, bool}){
+	const [check, setCheck] = useState(bool)
 	return(
 	
 		<TouchableOpacity 

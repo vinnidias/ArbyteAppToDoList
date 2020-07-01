@@ -10,6 +10,10 @@ import postarTarefa from '../api/postTarefa'
 import completaTarefa from '../api/completaTarefa'
 import { adionarLista, adicionarTarefa } from '../redux/actions/tarefas'
 import { connect } from 'react-redux'
+import BotaoPadrao from '../componentes/BotaoPadrao'
+
+
+
 
 function TelaDeTarefas({ dispatch, navigation, tarefas }) {
 	// const {nome} = route.params
@@ -21,10 +25,13 @@ function TelaDeTarefas({ dispatch, navigation, tarefas }) {
 			.then((userData) => {
 				if (userData != null) {
 					const parsed = JSON.parse(userData);
+					console.log('async parceado', userData)
 					setUserData(parsed)
 					return parsed.token;
+				}else{
+					navigation.navigate('TelaDeLogin')
 				}
-			}).catch(err => { console.log('primeiro catch', err); navigation.navigate('TelaDeLogin') })
+			})
 			.then((token) => {
 				if (!token) return;
 				return axios.get('https://arbyte-todo-list-api.herokuapp.com/tasks', {
@@ -32,7 +39,7 @@ function TelaDeTarefas({ dispatch, navigation, tarefas }) {
 						Authorization: `Bearer ${token}`
 					}
 				})
-			})
+			})	
 			.then(res => {
 				dispatch(adionarLista(res.data))
 			}).catch(err => console.log('erro de rede', err))
@@ -80,11 +87,17 @@ function TelaDeTarefas({ dispatch, navigation, tarefas }) {
 							const indice = tarefas.findIndex((tarefa)=> tarefa.id === id)
 							tarefas.splice(indice, 1)
 							tarefas.push(res.data)
+							console.log('resultado do checkpress', res.data)
 							dispatch(adionarLista(tarefas))
 						}) 
 					}}
 				/>
 			</View>
+			<BotaoPadrao titulo={'Sair'} pressionado={()=> {
+				AsyncStorage.removeItem('userData')
+					.then((userData)=> {navigation.navigate('TelaDeLogin')})
+				}
+				}/>
 		</View>
 	)
 }

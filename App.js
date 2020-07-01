@@ -19,7 +19,7 @@ function App() {
 	  <Provider store={store}> 
 			<NavigationContainer>
 				<Stack.Navigator 
-					initialRouteName='TelaDeLogin'
+					initialRouteName='TelaDeTarefas'
 					screenOptions={{ headerShown: false}}>
 					<Stack.Screen name='TelaDeLogin' component={TelaDeLogin}/>
 					<Stack.Screen name='TelaDeCadastro' component={TelaDeCadastro}/>

@@ -28,7 +28,7 @@ function TelaDeLogin({route, navigation}){
 						})
 						.then(()=>{
 							console.log('caiu aqui'); 
-							navigation.navigate('TelaDeTarefas');
+							navigation.push('TelaDeTarefas');
 							setEmail('')
 						})
 					.catch(err => {console.log('caiu no erro', err); Alert.alert('dados inválidos')})
